@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HighLevel • Gestão de Cotações</title>
+<meta name="description" content="Prévia funcional do sistema de gestão de cotações, calendário, pagamentos e configurações.">
+<link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-brand"><span class="login-mark">↑↑</span><span>HighLevel</span></div>
+    <h2>Bem-vindo ao Portal de Cotações</h2>
+    <p class="subtitle">Acesse o ambiente de gestão do processo de cotação e acompanhe suas oportunidades.</p>
+    <form id="loginForm">
+      <div class="login-field"><label>E-MAIL</label><input id="loginEmail" type="email" placeholder="usuario@empresa.com" value="giovanna@resiplastic.com" required></div>
+      <div class="login-field"><label>SENHA</label><input id="loginPassword" type="password" placeholder="Digite sua senha" value="123456" required></div>
+      <div class="login-field"><label>FILIAL</label>
+        <select id="loginBranch" required>
+          <option value="Mauá">Mauá</option><option value="Sorocaba">Sorocaba</option>
+          <option value="Fazenda Rio Grande">Fazenda Rio Grande</option><option value="Catalão">Catalão</option><option value="Montenegro">Montenegro</option>
+        </select>
+      </div>
+      <button class="login-submit" type="submit">Entrar no sistema</button>
+      <div class="login-error" id="loginError">Preencha e-mail, senha e filial.</div>
+    </form>
+    <div class="login-hint">Acesso demonstrativo • Qualquer e-mail válido + senha com 4 ou mais caracteres.</div>
+  </div>
+</div>
+
+<div class="app" id="app">
+<aside class="sidebar">
+  <div class="brand"><span class="brand-mark">↑↑</span><span>HighLevel</span></div>
+  <div class="workspace" id="workspaceName">Resiplastic Rotomoldagem <span>⌄</span></div>
+  <div class="branch-chip" id="branchChip">Filial: Mauá</div>
+  <div class="search-box">⌕ <span>Buscar</span><kbd>Ctrl K</kbd></div>
+  <nav class="nav">
+    <button class="active" data-view="dashboard">▦ <span>Dashboard</span></button>
+    <button data-view="calendario">□ <span>Calendário</span></button>
+    <button data-view="pagamentos">▣ <span>Pagamentos</span></button>
+    <button data-view="configuracoes">⚙ <span>Configurações</span></button>
+  </nav>
+  <div class="collapse">‹ &nbsp; Recolher menu</div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <h1 id="pageTitle">Dashboard - Processo de Cotação</h1>
+  <div class="top-actions">
+    <button class="circle add" id="quickAdd">+</button>
+    <button class="icon-btn" title="Telefone">⌕</button>
+    <button class="icon-btn notification-button" id="notificationBtn" title="Notificações">♧<sup id="notificationCount">3</sup></button>
+    <button class="icon-btn" title="Ajuda">?</button>
+    <div class="avatar">GR</div><div class="user-name">Giovanna Ruiz<small id="userBranch">Comercial • Mauá</small></div>
+    <button class="logout-btn" id="logoutBtn">Sair</button>
+  </div>
+  <div class="notifications-popover hidden" id="notificationsPopover">
+    <div class="notif-head"><strong>Notificações</strong><button id="markRead">Marcar como lidas</button></div>
+    <div id="notificationList"></div>
+  </div>
+</header>
+
+<section id="view-dashboard" class="view">
+  <div class="toolbar">
+    <select><option>Pipeline: Processo de Cotação</option></select>
+    <select id="responsibleFilter"><option>Todos os responsáveis</option><option>Giovanna Ruiz</option><option>João Lima</option><option>Marina Rocha</option></select>
+    <div class="toolbar-spacer"></div>
+    <button class="secondary" id="reportBtn">▥ Relatórios</button>
+    <button class="primary" id="newQuoteBtn">＋ Nova Cotação</button>
+  </div>
+  <div class="pipeline" id="pipeline"></div>
+  <div class="detail-layout">
+    <section class="quote-detail">
+      <div class="detail-header">
+        <div><h2 id="detailTitle">COT-2026-00131</h2><span class="stage-badge" id="stageBadge">ANÁLISE CRÍTICA - ENGENHARIA</span></div>
+        <div class="detail-actions"><button class="secondary" id="moreBtn">•••</button><button class="secondary" id="moveBackBtn">← Retroceder</button><button class="secondary" id="moveBtn">→ Avançar</button><button class="primary" id="editBtn">Editar</button></div>
+      </div>
+      <div class="quote-summary" id="quoteSummary"></div>
+      <div class="progress" id="progress"></div>
+      <div class="tabs">
+        <button class="tab active" data-tab="resumo">Resumo</button><button class="tab" data-tab="analise">Análise Crítica</button><button class="tab" data-tab="devolutiva">Devolutiva</button><button class="tab" data-tab="custos">Custos</button><button class="tab" data-tab="aprovacoes">Aprovações</button><button class="tab" data-tab="anexos">Anexos</button><button class="tab" data-tab="atividades">Atividades</button><button class="tab" data-tab="historico">Histórico</button>
+      </div>
+      <div class="tab-content" id="tabContent"></div>
+    </section>
+    <aside class="right-panel">
+      <div class="panel-card"><h3>RESPONSÁVEL ATUAL</h3><div class="responsible"><div class="person-avatar">JL</div><div><strong>João Lima</strong><small>Engenharia</small></div><span>☎ ✉ ◯</span></div></div>
+      <div class="panel-card next"><h3>PRÓXIMA AÇÃO <button id="createTask">+ Criar tarefa</button></h3><div class="next-action">▣ <div><strong id="nextActionTitle">Concluir análise crítica da cotação</strong><small>Prazo: <b>11/05/2026 17:00</b></small></div></div></div>
+      <div class="panel-card"><h3>ATIVIDADE RECENTE</h3><div class="activity"><i>JL</i><div>Etapa alterada para Engenharia<small>por João Lima<br>05/05/2026 10:21</small></div></div><div class="activity"><i class="green">GS</i><div>Cotação criada<small>por Giovanna Sales<br>05/05/2026 09:15</small></div></div><div class="activity"><i class="blue">GS</i><div>Documento adicionado<small><a>Especificação_Tecnica.pdf</a><br>05/05/2026 09:16</small></div></div><a class="all-link">Ver todas as atividades</a></div>
+      <div class="panel-card tasks"><h3>TAREFAS <button id="addTask">+ Criar tarefa</button></h3>
+        <label><input type="checkbox" checked> Análise crítica <em>11/05</em><small>João Lima</small></label>
+        <label><input type="checkbox"> Enviar devolutiva para Comercial <em>11/05</em><small>João Lima</small></label>
+        <label><input type="checkbox"> Formação de custos <em>12/05</em><small>Giovanna S.</small></label>
+        <label><input type="checkbox"> Aprovação de custos <em>13/05</em><small>Marina Rocha</small></label>
+        <label><input type="checkbox"> Aprovação da direção <em>14/05</em><small>Diretoria</small></label>
+      </div>
+      <div class="panel-card notes"><h3>NOTAS <button id="addNote">+ Adicionar nota</button></h3><p id="noteText">Nenhuma nota adicionada.</p></div>
+    </aside>
+  </div>
+</section>
+
+<section id="view-calendario" class="view hidden">
+  <div class="section-head"><div><h2>Calendário</h2><p>Compromissos e prazos de 2026</p></div><button class="primary" id="newEventBtn">＋ Novo compromisso</button></div>
+  <div class="calendar-wrap">
+    <div class="calendar-toolbar"><button class="secondary" id="prevMonth">‹</button><h3 id="calendarMonth"></h3><button class="secondary" id="nextMonth">›</button><button class="secondary" id="todayBtn">Hoje</button></div>
+    <div class="weekdays"><span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span></div>
+    <div class="calendar-grid" id="calendarGrid"></div>
+  </div>
+</section>
+
+<section id="view-pagamentos" class="view hidden">
+  <div class="section-head"><div><h2>Pagamentos</h2><p>Acompanhamento financeiro das cotações do Dashboard</p></div></div>
+  <div class="payment-kpis" id="paymentKpis"></div>
+  <div class="payment-layout"><div class="panel-card payment-table-card"><h3>CONTAS A RECEBER / PAGAR</h3><div class="payment-table" id="paymentTable"></div></div><div class="panel-card chart-card"><h3>LUCRO PROJETADO</h3><canvas id="profitChart" height="270"></canvas><div class="chart-legend">Valores de venda considerados com <strong>20% de lucro</strong> sobre a base de cada cotação.</div></div></div>
+</section>
+
+<section id="view-configuracoes" class="view hidden">
+  <div class="section-head"><div><h2>Configurações</h2><p>Preferências da experiência de demonstração</p></div></div>
+  <div class="settings-card panel-card">
+    <div class="setting-row"><div><strong>Tema escuro</strong><small>Escurecer toda a interface para uso em ambientes com pouca luz.</small></div><label class="switch"><input type="checkbox" id="darkModeToggle"><span></span></label></div>
+    <div class="setting-row"><div><strong>Filial atual</strong><small>Filial utilizada nesta sessão.</small></div><select id="branchSetting"><option>Mauá</option><option>Sorocaba</option><option>Fazenda Rio Grande</option><option>Catalão</option><option>Montenegro</option></select></div>
+    <div class="setting-row"><div><strong>Notificações</strong><small>Receba atualizações sobre cotações e compromissos.</small></div><label class="switch"><input type="checkbox" id="notifToggle" checked><span></span></label></div>
+  </div>
+</section>
+
+<footer>HighLevel <span>© 2026 GoHighLevel, Inc. Todos os direitos reservados.</span><span>Changelog &nbsp; | &nbsp; Suporte &nbsp; | &nbsp; Termos de Uso &nbsp; | &nbsp; Privacidade</span></footer>
+</main></div>
+
+<div class="modal hidden" id="modal"><div class="modal-box"><div class="modal-head"><h2 id="modalTitle">Nova Cotação</h2><button id="closeModal">×</button></div><form id="quoteForm"><div class="form-grid"><label>Cliente<input name="cliente" required placeholder="Ex.: Alfa Industrial"></label><label>Produto<input name="produto" required placeholder="Ex.: Tanque 2000L"></label><label>Quantidade<input name="quantidade" type="number" value="1000"></label><label>Valor estimado (R$)<input name="valor" type="number" value="75000"></label><label>Prazo solicitado<input name="prazo" value="30 dias"></label><label>Responsável<select name="responsavel"><option>João Lima</option><option>Giovanna Ruiz</option><option>Marina Rocha</option></select></label></div><label>Observações<textarea name="obs" placeholder="Detalhes da cotação..."></textarea></label><div class="modal-actions"><button type="button" class="secondary" id="cancelModal">Cancelar</button><button class="primary">Criar cotação</button></div></form></div></div>
+
+<div class="modal hidden" id="eventModal"><div class="modal-box"><div class="modal-head"><h2 id="eventModalTitle">Novo compromisso</h2><button id="closeEventModal">×</button></div><form id="eventForm"><div class="form-grid"><label>Título<input name="title" required placeholder="Reunião com cliente"></label><label>Data<input name="date" type="date" min="2026-01-01" max="2026-12-31" required></label><label>Horário<input name="time" type="time" value="09:00"></label><label>Responsável<input name="person" value="Giovanna Ruiz"></label></div><label>Descrição<textarea name="description" placeholder="Detalhes do compromisso..."></textarea></label><div class="modal-actions"><button type="button" class="secondary" id="cancelEvent">Cancelar</button><button class="primary">Salvar compromisso</button></div></form></div></div>
+
+<script src="app.js"></script>
+</body></html>
